@@ -5,6 +5,8 @@ import { router } from "./routes";
 import Header from "./components/header/Header";
 
 function App() {
+  /* if I had more time I could implement error boundary here to handle uncaught errors.
+    This could also be implemented in other components.   */
   return (
     <div className="app">
       <Header />

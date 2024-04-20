@@ -45,6 +45,11 @@ function CardDetail() {
     })();
   }, [savedCards]);
 
+  /** This part could have been written much more cleanly if time had been given. 
+    By writing a custom hook, it could be checked whether the card in question is in localStorage.
+     according to the result, save / remove could be done.
+      This would have made the code much cleaner. */
+
   const handleSaveOrRemove = () => {
     const savedCards = JSON.parse(localStorage.getItem("myCards")!);
 
