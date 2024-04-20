@@ -1,7 +1,7 @@
 import classes from "../CardDetail.module.scss";
 import classNames from "classnames";
 
-function useButtonStatus({ isSaveBtn }: { isSaveBtn: boolean }) {
+function useCardButtonVariants({ isSaveBtn }: { isSaveBtn: boolean }) {
   const buttonTxt = isSaveBtn ? "Save Card" : "Remove Card";
 
   const buttonClasses = classNames([
@@ -12,4 +12,4 @@ function useButtonStatus({ isSaveBtn }: { isSaveBtn: boolean }) {
   return { buttonTxt, buttonClasses };
 }
 
-export default useButtonStatus;
+export default useCardButtonVariants;
