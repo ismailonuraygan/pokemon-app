@@ -1,0 +1,42 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.detailRow {
+  width: 380px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 4px;
+  background-image: linear-gradient(to right, #00b4db, #0083b0);
+  border-radius: 4px;
+  color: #fff;
+}
+
+.toggleBtn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.saveBtn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.removeBtn {
+  background-color: #f44336;
+  color: white;
+}
