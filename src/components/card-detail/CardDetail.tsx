@@ -3,7 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import { useRequest } from "../../api/useRequest";
 import { ICard } from "../../types";
 import classes from "./CardDetail.module.scss";
-import useButtonStatus from "./helper/useButtonStatus";
+import useCardButtonVariants from "./helper/useCardButtonVariants";
+import useLocalStorage from "./helper/useLocalStorage";
 
 function CardDetail() {
   const [searchParams] = useSearchParams();
@@ -11,10 +12,8 @@ function CardDetail() {
   const req = useRequest();
 
   const [data, setData] = useState<ICard>();
-  const [isSaveBtn, setIsSaveBtn] = useState<boolean>(true);
-  const [savedCards, setSavedCards] = useState<string[]>();
-
-  const { buttonTxt, buttonClasses } = useButtonStatus({ isSaveBtn });
+  const { isSaveBtn, saveOrRemoveCard } = useLocalStorage(id || "");
+  const { buttonTxt, buttonClasses } = useCardButtonVariants({ isSaveBtn });
 
   const fetchCardDetail = async () => {
     try {
@@ -29,44 +28,6 @@ function CardDetail() {
   useEffect(() => {
     fetchCardDetail();
   }, []);
-
-  useEffect(() => {
-    (() => {
-      const myCards = localStorage.getItem("myCards");
-      myCards && setSavedCards(JSON.parse(myCards));
-
-      if (JSON.parse(myCards!).includes(id)) {
-        console.log("log from if");
-        setIsSaveBtn(false);
-        return;
-      }
-
-      setIsSaveBtn(true);
-    })();
-  }, [savedCards]);
-
-  /** This part could have been written much more cleanly if time had been given. 
-    By writing a custom hook, it could be checked whether the card in question is in localStorage.
-     according to the result, save / remove could be done.
-      This would have made the code much cleaner. */
-
-  const handleSaveOrRemove = () => {
-    const savedCards = JSON.parse(localStorage.getItem("myCards")!);
-
-    if (isSaveBtn) {
-      const data = JSON.stringify([...savedCards, id]);
-      localStorage.setItem("myCards", data);
-      setSavedCards([...savedCards, id]);
-      return;
-    }
-
-    const filteredSavedCards = savedCards?.filter((savedId: string) => {
-      return savedId !== id;
-    });
-
-    localStorage.setItem("myCards", JSON.stringify(filteredSavedCards));
-    setSavedCards(filteredSavedCards);
-  };
 
   return (
     <div className={classes.wrapper}>
@@ -90,7 +51,7 @@ function CardDetail() {
         <p>Set:</p>
         <p>{data?.set.name}</p>
       </div>
-      <button className={buttonClasses} onClick={handleSaveOrRemove}>
+      <button className={buttonClasses} onClick={saveOrRemoveCard}>
         {buttonTxt}
       </button>
     </div>
