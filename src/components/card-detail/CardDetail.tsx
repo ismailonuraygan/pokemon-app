@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useRequest } from "../../api/useRequest";
 import { ICard } from "../../types";
 import classes from "./CardDetail.module.scss";
-import classNames from "classnames";
+import useButtonStatus from "./helper/useButtonStatus";
 
 function CardDetail() {
   const [searchParams] = useSearchParams();
@@ -11,7 +11,10 @@ function CardDetail() {
   const req = useRequest();
 
   const [data, setData] = useState<ICard>();
+  const [isSaveBtn, setIsSaveBtn] = useState<boolean>(true);
   const [savedCards, setSavedCards] = useState<string[]>();
+
+  const { buttonTxt, buttonClasses } = useButtonStatus({ isSaveBtn });
 
   const fetchCardDetail = async () => {
     try {
@@ -26,6 +29,39 @@ function CardDetail() {
   useEffect(() => {
     fetchCardDetail();
   }, []);
+
+  useEffect(() => {
+    (() => {
+      const myCards = localStorage.getItem("myCards");
+      myCards && setSavedCards(JSON.parse(myCards));
+
+      if (JSON.parse(myCards!).includes(id)) {
+        console.log("log from if");
+        setIsSaveBtn(false);
+        return;
+      }
+
+      setIsSaveBtn(true);
+    })();
+  }, [savedCards]);
+
+  const handleSaveOrRemove = () => {
+    const savedCards = JSON.parse(localStorage.getItem("myCards")!);
+
+    if (isSaveBtn) {
+      const data = JSON.stringify([...savedCards, id]);
+      localStorage.setItem("myCards", data);
+      setSavedCards([...savedCards, id]);
+      return;
+    }
+
+    const filteredSavedCards = savedCards?.filter((savedId: string) => {
+      return savedId !== id;
+    });
+
+    localStorage.setItem("myCards", JSON.stringify(filteredSavedCards));
+    setSavedCards(filteredSavedCards);
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -49,6 +85,9 @@ function CardDetail() {
         <p>Set:</p>
         <p>{data?.set.name}</p>
       </div>
+      <button className={buttonClasses} onClick={handleSaveOrRemove}>
+        {buttonTxt}
+      </button>
     </div>
   );
 }
