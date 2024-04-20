@@ -1,0 +1,57 @@
+* {
+    box-sizing: border-box;
+  
+    &:before,
+    &:after {
+      box-sizing: border-box;
+    }
+  }
+  
+  html,
+  body,
+  div,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ul,
+  li,
+  blockquote,
+  form,
+  figure,
+  figcaption,
+  table,
+  section,
+  nav,
+  header,
+  footer,
+  aside,
+  article,
+  label {
+    margin: 0;
+    padding: 0;
+  }
+  
+  a {
+    text-decoration: none;
+  
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  
+  ul,
+  li {
+    list-style: none;
+  }
+  
+  :focus {
+    outline: 0;
+  }
+  
+  ::placeholder {
+    color: #999;
+  }
