@@ -1,8 +1,18 @@
 import React from "react";
+import classes from "./Header.module.scss";
 
 function Header() {
-  /*Maybe one of pokemon picture */
-  return <h1>HEADER</h1>;
+  return (
+    <div className={classes.header}>
+      <img
+        src={require("./pokemon.png")}
+        alt="logo"
+        width={350}
+        height={150}
+        className={classes.logo}
+      />
+    </div>
+  );
 }
 
 export default Header;
