@@ -3,6 +3,8 @@ import { useRequest } from "../../api/useRequest";
 import { ICard } from "../../types";
 import Card from "../card/Card";
 import classes from "./Home.module.scss";
+import InfiniteScroll from "react-infinite-scroll-component";
+import LoadingDots from "./components/loading/Loading";
 
 /*According to requirements it can be implement infinite scroll here 
   to allow user to load more data as they scroll.
@@ -12,45 +14,50 @@ import classes from "./Home.module.scss";
 function Home() {
   const req = useRequest();
   const [cards, setCards] = useState<ICard[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
 
   const fetchAndSetData = async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       const result = await req.get("cards", {
         params: {
+          page: page,
           pageSize: 10,
         },
       });
       if (result) {
         console.log("result", result);
-        setCards(result.data.data);
-        setLoading(false);
+        setCards([...cards, ...result.data.data]);
+        setIsLoading(false);
         return;
       }
     } catch (error) {
-      console.log("error", error);
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     fetchAndSetData();
-  }, []);
-
-  if (loading) {
-    /*it can be implement skeleton loading here for cards. */
-    return <div>Loading...</div>;
-  }
+  }, [page]);
 
   return (
     <div className={classes.container}>
-      {cards.length ? (
-        cards.map((card) => <Card data={card} />)
-      ) : (
-        /* a good looking fallback component could be created  */
-        <p>No Cards available</p>
-      )}
+      <InfiniteScroll
+        dataLength={cards.length}
+        next={() => {
+          console.log("xxpage", page);
+          setPage((prev) => prev + 1);
+        }}
+        hasMore={true}
+        loader={""}
+        className={classes.infiniteScroll}
+      >
+        {cards.map((card) => (
+          <Card data={card} />
+        ))}
+      </InfiniteScroll>
+      {isLoading && <LoadingDots text="Loading" />}
     </div>
   );
 }

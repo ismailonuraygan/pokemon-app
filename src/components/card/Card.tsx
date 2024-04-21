@@ -26,7 +26,7 @@ function Card(props: IProps) {
         <p>{name}</p>
         <p>{data.types[0]}</p>
       </div>
-      <img src={images.small} alt={name} loading="lazy" />
+      <img src={images.small} alt={name} />
       <button className={classes.detailButton} onClick={navigateToDetailPage}>
         View Detail
       </button>
