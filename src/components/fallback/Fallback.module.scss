@@ -1,0 +1,26 @@
+.errorOutline {
+  position: relative;
+  border: 1px solid #ff3b3b;
+  border-radius: 12px;
+  padding: 12px;
+  background-color: #512824;
+  color: #fff;
+  margin: 8px 16px;
+}
+
+.generalErrorOutline {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 16px;
+  margin: 16px 16px;
+}
+
+.errorIcon {
+  font-size: 32px;
+  vertical-align: middle;
+  margin-right: 12px;
+}
