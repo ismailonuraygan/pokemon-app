@@ -20,6 +20,7 @@ function useLocalStorage(id: string) {
   const saveOrRemoveCard = () => {
     if (isSaveBtn) {
       const newSavedCards = JSON.stringify([...savedCards, id]);
+      setSavedCards([...savedCards, id]);
       return localStorage.setItem("myCards", newSavedCards);
     }
 
@@ -29,7 +30,11 @@ function useLocalStorage(id: string) {
     setSavedCards(filteredCards);
   };
 
-  return { savedCards, isSaveBtn, saveOrRemoveCard };
+  const isSaved = (cardId: string) => {
+    return savedCards.includes(cardId);
+  };
+
+  return { savedCards, isSaveBtn, saveOrRemoveCard, isSaved };
 }
 
 export default useLocalStorage;

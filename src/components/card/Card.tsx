@@ -2,6 +2,7 @@ import React from "react";
 import { ICard } from "../../types";
 import classes from "./Card.module.scss";
 import { useNavigate } from "react-router-dom";
+import useLocalStorage from "../card-detail/helper/useLocalStorage";
 
 interface IProps {
   data: ICard;
@@ -12,6 +13,7 @@ function Card(props: IProps) {
   const { id, name, images } = data;
 
   const navigate = useNavigate();
+  const { isSaved } = useLocalStorage(id);
 
   const navigateToDetailPage = () => {
     navigate({
@@ -24,7 +26,14 @@ function Card(props: IProps) {
     <div className={classes.card}>
       <div className={classes.cardHeader}>
         <p>{name}</p>
-        <p>{data.types[0]}</p>
+        {isSaved(id) && (
+          <img
+            src={require("./check.png")}
+            width={16}
+            height={16}
+            alt="check"
+          />
+        )}
       </div>
       <img src={images.small} alt={name} />
       <button className={classes.detailButton} onClick={navigateToDetailPage}>
