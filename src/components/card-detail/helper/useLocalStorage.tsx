@@ -7,7 +7,9 @@ function useLocalStorage(id: string) {
   useEffect(() => {
     const cards = localStorage.getItem("myCards");
     if (cards) setSavedCards(JSON.parse(cards));
+  }, []);
 
+  useEffect(() => {
     if (savedCards.includes(id)) {
       return setIsSaveBtn(false);
     }
